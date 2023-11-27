@@ -1,4 +1,3 @@
-# Import the dependencies.
 import numpy as np
 
 import sqlalchemy
@@ -10,23 +9,20 @@ from flask import Flask, jsonify
 import datetime as dt
 
 
+
 #################################################
 # Database Setup
 #################################################
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
-
 
 # reflect an existing database into a new model
 Base = automap_base()
 # reflect the tables
 Base.prepare(engine, reflect=True)
 
-# Save references to each table
+# Save reference to the table
 Measurement = Base.classes.measurement
 Station = Base.classes.station
-
-# Create our session (link) from Python to the DB
-
 
 #################################################
 # Flask Setup
@@ -34,10 +30,10 @@ Station = Base.classes.station
 app = Flask(__name__)
 
 
-
 #################################################
 # Flask Routes
 #################################################
+
 @app.route("/")
 def welcome():
     """List all available api routes."""
@@ -49,6 +45,8 @@ def welcome():
         f"/api/v1.0/start<br/>"
         f"/api/v1.0/start/end"
     )
+
+
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
@@ -59,6 +57,7 @@ def precipitation():
     results = session.query(Measurement.date,Measurement.prcp).all()
 
     session.close()
+
     # Convert list of tuples into dictionary
     all_precepitation=[]
     for date,prcp in results:
@@ -158,7 +157,5 @@ def calc_temps_sd(start):
     temp_obs["avg_Temp"]=results[0][1]
     temp_obs["max_Temp"]=results[0][2]
     return jsonify(temp_obs)
-
-# add code Above
 if __name__ == '__main__':
     app.run(debug=True)
