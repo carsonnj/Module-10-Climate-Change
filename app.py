@@ -49,6 +49,8 @@ def welcome():
         f"/api/v1.0/start<br/>"
         f"/api/v1.0/start/end"
     )
+
+
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
@@ -59,6 +61,7 @@ def precipitation():
     results = session.query(Measurement.date,Measurement.prcp).all()
 
     session.close()
+
     # Convert list of tuples into dictionary
     all_precepitation=[]
     for date,prcp in results:
@@ -158,7 +161,6 @@ def calc_temps_sd(start):
     temp_obs["avg_Temp"]=results[0][1]
     temp_obs["max_Temp"]=results[0][2]
     return jsonify(temp_obs)
-
 # add code Above
 if __name__ == '__main__':
     app.run(debug=True)
